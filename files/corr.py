@@ -1,3 +1,5 @@
+#from Numeric import *
+from math import *
 
 ip = open ("train.txt", "r")
 stri = ip.readline()
@@ -22,13 +24,22 @@ for w in whole_list:
 	temp_list.append(w)
 	x = x+1
 
-agv_list = {}
+agv_list = []
 
 for k, v in mydict.items():
-	print str (k) + " == " + str(len(v)
-	"""
-	average = float(sum(v)) / 1000	#len(v)
-	agv_list[k] = average 
-	"""
+	#print str (k) + " == " + str(len(v))
+	sum_rating = 0
+	sum_squares = 0
+	for rating in v:
+		sum_rating = sum_rating + int (rating)
+		sum_squares = sum_squares + ( int (rating) * int (rating) )
+	
+	average = float(sum_rating) / len(v)
+	agv_list.append(str(average))
+	agv_list.append(str(sqrt(sum_squares)))
 
-#print " %s || %s " % (str(agv_list[0]), str(agv_list[1]))
+op = open ("average.txt", "w")
+op.write(" ".join(agv_list))
+op.close()
+
+print " %s || %s " % (str(agv_list[0]), str(agv_list[1]))
