@@ -10,18 +10,8 @@ ip = open ("test5.txt", "r")
 lines = ip.readlines()
 ip.close()
 
-#print lines[0].strip()
-#print lines[1].strip()
-# create dict
-for line in lines:
-	tmp = line.strip().split()
-	if tmp[0] in test5dict.keys():
-		test5dict[tmp[0]].append(tmp[1] + "," + tmp[2])
-		continue
-	test5dict[tmp[0]] = [tmp[1] + "," + tmp[2]]
-
-for k in test5dict.keys():
-	print str(k) + " "
+print lines[0].strip()
+print lines[1].strip()
 
 sys.exit() 
 
