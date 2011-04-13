@@ -71,12 +71,14 @@ def read_test20(trainlol):     #input is listoflist
                 #print "triplet = %d %d %d" % (intpid, train_user, i)
                 #print test20dict[pid][i]
                 (movieid, rating) = test20dict[pid][i].split(",")
-                movieid = int (movieid) - 1 #test20dict[pid][i].split(",")[0])
-                rating = int (rating)   #test20dict[pid][i].split(",")[1])
-                #print ("movie id %d and rating %d") % (movieid, rating)
+                movieid = int (movieid) -1
+                rating = float (rating)
+                if trainlol[train_user][movieid] == 0:
+                    #print "%s || %s" % (train_user, movieid+1)
+                    continue
 
-                numd1 =  float(rating)  # - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) #  - float(averages[train_user])
+                numd1 =  float(rating) # - pid_avg[str(intpid)])
+                numd2 = float(trainlol[train_user][movieid]) #- float(averages[train_user])
                 #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
                 if numd1 == 0:
                     numd1 = 1
@@ -88,9 +90,10 @@ def read_test20(trainlol):     #input is listoflist
                 sq_numd1 += numd1*numd1
                 sq_numd2 += numd2*numd2
 
-            Wai = float(num_sum)/sqrt(sq_numd1*sq_numd2)     # w(a,i) test user a, v/s train user i
-            #print "triplet = %d %d %f" % (intpid, train_user, Wai)
-            #tmp_list.append(str(Wai))
+            if (sq_numd1 == 0 or sq_numd2 == 0):
+                Wai = 0
+            else:
+                Wai = float(num_sum)/sqrt(sq_numd1*sq_numd2)     # w(a,i) test user a, v/s train user i
             tmp_list.append(Wai)
         wuut.append(tmp_list)       # testuser 201 [list of 1-200] .... .so on
                                     # [201, 10] wuut[201][10]
@@ -98,9 +101,10 @@ def read_test20(trainlol):     #input is listoflist
     #sys.exit()
     #print "wuut info"
     #print "%s and %s" % (len(wuut) ,len(wuut[3]))
-    #info (wuut, test20dict, pid_avg, averages, trainlol)
+    print 'read20'
+    info (wuut, test20dict, pid_avg, averages, trainlol)
     predict20 (wuut, test20dict, pid_avg, averages, trainlol)
-    sys.exit()
+    #sys.exit()
 
 def predict20(wuut, test20dict, pid_avg, averages, trainlol):
     predicted_list = []                 # 200+i v/s id      wuut[i-1][id]
@@ -121,6 +125,8 @@ def predict20(wuut, test20dict, pid_avg, averages, trainlol):
                 for i in range(0,200):
                     w = wuut[testid-401][i]
                     #print "%s %s" % (i , movieid)
+                    if trainlol[i][movieid] == 0:
+                        continue
                     t_sum += float(w) * ( trainlol[i][movieid] - float(averages[i]) )
                 pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumOfWs[testid-401]
                 #pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumofList(wuut[testid-201])
@@ -130,7 +136,7 @@ def predict20(wuut, test20dict, pid_avg, averages, trainlol):
                 if new_rating < 1:
                     new_rating = 1
                 predicted_list.append("%s %s %s" % (testid, movieid+1, new_rating))
-    write_to_file_list ("vresult20.txt", predicted_list)
+    write_to_file_list ("wmresult20.txt", predicted_list)
     return
 
 def read_test10(trainlol):     #input is listoflist
@@ -192,12 +198,13 @@ def read_test10(trainlol):     #input is listoflist
                 #print "triplet = %d %d %d" % (intpid, train_user, i)
                 #print test10dict[pid][i]
                 (movieid, rating) = test10dict[pid][i].split(",")
-                movieid = int (movieid) - 1 #test10dict[pid][i].split(",")[0])
-                rating = int (rating)   #test10dict[pid][i].split(",")[1])
-                #print ("movie id %d and rating %d") % (movieid, rating)
-
-                numd1 =  float(rating)  # - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) #  - float(averages[train_user])
+                movieid = int (movieid) - 1
+                rating = float (rating)
+                if trainlol[train_user][movieid] == 0:
+                    #print "%s || %s" % (train_user, movieid+1)
+                    continue
+                numd1 =  float(rating) # - pid_avg[str(intpid)])
+                numd2 = float(trainlol[train_user][movieid]) #- float(averages[train_user])
                 #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
                 if numd1 == 0:
                     numd1 = 1
@@ -209,9 +216,10 @@ def read_test10(trainlol):     #input is listoflist
                 sq_numd1 += numd1*numd1
                 sq_numd2 += numd2*numd2
 
-            Wai = float(num_sum)/sqrt(sq_numd1*sq_numd2)     # w(a,i) test user a, v/s train user i
-            #print "triplet = %d %d %f" % (intpid, train_user, Wai)
-            #tmp_list.append(str(Wai))
+            if (sq_numd1 == 0 or sq_numd2 == 0):
+                Wai = 0
+            else:
+                Wai = float(num_sum)/sqrt(sq_numd1*sq_numd2)     # w(a,i) test user a, v/s train user i
             tmp_list.append(Wai)
         wuut.append(tmp_list)       # testuser 201 [list of 1-200] .... .so on
                                     # [201, 10] wuut[201][10]
@@ -219,9 +227,10 @@ def read_test10(trainlol):     #input is listoflist
     #sys.exit()
     #print "wuut info"
     #print "%s and %s" % (len(wuut) ,len(wuut[3]))
-    #info (wuut, test10dict, pid_avg, averages, trainlol)
+    print 'read10'
+    info (wuut, test10dict, pid_avg, averages, trainlol)
     predict10 (wuut, test10dict, pid_avg, averages, trainlol)
-    sys.exit()
+    #sys.exit()
 
 def predict10(wuut, test10dict, pid_avg, averages, trainlol):
     predicted_list = []                 # 200+i v/s id      wuut[i-1][id]
@@ -242,6 +251,8 @@ def predict10(wuut, test10dict, pid_avg, averages, trainlol):
                 for i in range(0,200):
                     w = wuut[testid-301][i]
                     #print "%s %s" % (i , movieid)
+                    if trainlol[i][movieid] == 0:
+                        continue
                     t_sum += float(w) * ( trainlol[i][movieid] - float(averages[i]) )
                 pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumOfWs[testid-301]
                 #pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumofList(wuut[testid-201])
@@ -251,7 +262,7 @@ def predict10(wuut, test10dict, pid_avg, averages, trainlol):
                 if new_rating < 1:
                     new_rating = 1
                 predicted_list.append("%s %s %s" % (testid, movieid+1, new_rating))
-    write_to_file_list ("vresult10.txt", predicted_list)
+    write_to_file_list ("wmresult10.txt", predicted_list)
     return
 
 # read the test file	test5.txt
@@ -286,6 +297,8 @@ def read_test5(trainlol):     #input is listoflist
                 pid_nzeros[pid] = 1
 
     print " ~~~ " + str(test5dict["201"])
+    #write_dict_to_file (test5dict)
+    #sys.exit()
 
         # find the avg. of the test ratings and store like: pid => average
     for pid in pid_avg.keys():
@@ -296,13 +309,13 @@ def read_test5(trainlol):     #input is listoflist
     print " ~~~ " + str(pid_avg["202"])
     print " ~~~ " + str(pid_avg["207"])
 
-    averages = []
+    averages = []           # train averages
     averages = read_averages()
 
-    wvalues = {}    # user 201  : list of w values for user 1-200
-    wuut = []   # list of list
+    #wvalues = {}    # user 201  : list of w values for user 1-200
+    wuut = []   # list of list  for user 201 - 300 columns =
 
-    for intpid in range(201,301):      # w calculation
+    for intpid in range(201,301):      #test5dict.keys():
         tmp_list = []
         for train_user in range(0,200):     # 0 to 199
             movieid = 0
@@ -311,29 +324,27 @@ def read_test5(trainlol):     #input is listoflist
             sq_numd2 = 0
             for i in range (0,5):
                 pid = str(intpid)
-                #print "triplet = %d %d %d" % (intpid, train_user, i)
-                #print test5dict[pid][i]
                 (movieid, rating) = test5dict[pid][i].split(",")
-                movieid = int (movieid) - 1 #test5dict[pid][i].split(",")[0])
-                rating = int (rating)   #test5dict[pid][i].split(",")[1])
-                #print ("movie id %d and rating %d") % (movieid, rating)
-
-                numd1 =  float(rating)  # - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) #  - float(averages[train_user])
+                movieid = int (movieid) - 1
+                rating = float (rating)
+                if trainlol[train_user][movieid] == 0:
+                    #print "%s || %s" % (train_user, movieid+1)
+                    continue
+                numd1 =  float(rating) # - pid_avg[str(intpid)])
+                numd2 = float(trainlol[train_user][movieid]) #- float(averages[train_user])
                 #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
                 if numd1 == 0:
                     numd1 = 1
                 if numd2 == 0:
                     numd2 = 1
-                #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
-                #print "culprit = "+str(pid_avg[str(intpid)])
                 num_sum += (numd1*numd2)    # numerator sums
                 sq_numd1 += numd1*numd1
                 sq_numd2 += numd2*numd2
 
-            Wai = float(num_sum)/sqrt(sq_numd1*sq_numd2)     # w(a,i) test user a, v/s train user i
-            #print "triplet = %d %d %f" % (intpid, train_user, Wai)
-            #tmp_list.append(str(Wai))
+            if (sq_numd1 == 0 or sq_numd2 == 0):
+                Wai = 0
+            else:
+                Wai = float(num_sum)/sqrt(sq_numd1*sq_numd2)     # w(a,i) test user a, v/s train user i
             tmp_list.append(Wai)
         wuut.append(tmp_list)       # testuser 201 [list of 1-200] .... .so on
                                     # [201, 10] wuut[201][10]
@@ -341,29 +352,11 @@ def read_test5(trainlol):     #input is listoflist
     #sys.exit()
     #print "wuut info"
     #print "%s and %s" % (len(wuut) ,len(wuut[3]))
+    print 'read5'
     info (wuut, test5dict, pid_avg, averages, trainlol)
     predict5 (wuut, test5dict, pid_avg, averages, trainlol)
-    sys.exit()
-
-def info(wuut, test5dict, pid_avg, averages, trainlol):
-    print "avg leng = %s" % (len(averages))
-    print "test5dict.keys leng = %s" % (len(test5dict.keys()))  # shud be 100 from 201 - 300
-    for k in test5dict.keys():
-        print "%s => %s" % (k, len(test5dict[k]))
-    print "wuut leng = %s" % (len(wuut))
-    for i in wuut:
-        if len(i) != 200:
-            print 'smth is wrong2'
-
-    print "pid_avg leng = %s" % (len(pid_avg))
-    for i in pid_avg:
-        if float(i) == 0:
-            print 'smth is wrong1'
-
-    print "trainlol leng = %s" % (len(trainlol))
-    for i in range(0,len(trainlol)):
-        if len(trainlol[i]) != 1000:
-            print 'smth is wrong'
+    return
+    #sys.exit()
 
 def predict5(wuut, test5dict, pid_avg, averages, trainlol):
     predicted_list = []                 # 200+i v/s id      wuut[i-1][id]
@@ -384,6 +377,8 @@ def predict5(wuut, test5dict, pid_avg, averages, trainlol):
                 for i in range(0,200):
                     w = wuut[testid-201][i]
                     #print "%s %s" % (i , movieid)
+                    if trainlol[i][movieid] == 0:
+                        continue
                     t_sum += float(w) * ( trainlol[i][movieid] - float(averages[i]) )
                 pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumOfWs[testid-201]
                 #pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumofList(wuut[testid-201])
@@ -393,8 +388,36 @@ def predict5(wuut, test5dict, pid_avg, averages, trainlol):
                 if new_rating < 1:
                     new_rating = 1
                 predicted_list.append("%s %s %s" % (testid, movieid+1, new_rating))
-    write_to_file_list ("vresult5.txt", predicted_list)
+    write_to_file_list ("wmresult5.txt", predicted_list)
     return
+
+def write_dict_to_file(mydict):
+    op = open ("dict", 'w')
+    for key in mydict.keys():
+        for values in mydict[key]:
+            op.write(key + "=>" + values)
+            op.write("\n")
+    op.close()
+
+def info(wuut, test5dict, pid_avg, averages, trainlol):
+    print "avg leng = %s" % (len(averages))
+    print "test5dict.keys leng = %s" % (len(test5dict.keys()))  # shud be 100 from 201 - 300
+    #for k in test5dict.keys():
+        #print "%s => %s" % (k, len(test5dict[k]))
+    print "wuut leng = %s" % (len(wuut))
+    for i in wuut:
+        if len(i) != 200:
+            print 'smth is wrong2'
+
+    print "pid_avg leng = %s" % (len(pid_avg))
+    for i in pid_avg:
+        if float(i) == 0:
+            print 'smth is wrong1'
+
+    print "trainlol leng = %s" % (len(trainlol))
+    for i in range(0,len(trainlol)):
+        if len(trainlol[i]) != 1000:
+            print 'smth is wrong'
 
 def sumList(wuut):
     elist = []
@@ -405,10 +428,12 @@ def sumList(wuut):
 def sumofList(mylist):
     s = 0
     for item in mylist:
+        s += abs(item)
+        """
         if item < 0:
             s += -(item)
         else:
-            s += item
+            s += item"""
     return s
 
 def write_to_file_list(name, list):
@@ -450,7 +475,25 @@ def read_training():
     #sys.exit()
 
     findavgRoot(mydict)
+    findavgRoot1(listoflist)
+    #sys.exit()
     return listoflist
+
+def findavgRoot1(lol):
+    agv_list = []
+    sqrt_list = []
+    for i in lol:
+        sum_r = sum(i)
+        nzero = 0
+        for j in i:
+            if j != 0:
+                nzero += 1
+        average = float(sum_r) / nzero
+    	agv_list.append(str(average))				#avg
+
+    op = open ("lolaverage.txt", "w")
+    op.write(" ".join(agv_list))
+    op.close()
 
 def findavgRoot(mydict):
     agv_list = []
@@ -481,8 +524,8 @@ def callme():
     listoflist = read_training()
     #sys.exit()
     #mydict = read_training()
-    #read_test5(listoflist)
-    #read_test10(listoflist)
+    read_test5(listoflist)
+    read_test10(listoflist)
     read_test20(listoflist)
 
 
