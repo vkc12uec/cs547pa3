@@ -450,7 +450,27 @@ def read_training():
     #sys.exit()
 
     findavgRoot(mydict)
+    findavgRoot1(listoflist)
+    sys.exit()
     return listoflist
+
+def findavgRoot1(listoflist):
+    agv_list = []
+    sqrt_list = []
+
+	for i in listoflist:
+		sum_r = 0
+		nzero = 0
+		for j in i:
+			if j != 0:
+				nzero += 1
+		sum_r = sum(i)
+		average = float(sum_r) / nzero
+		agv_list.append(str(average))
+
+    op = open ("lolaverage.txt", "w")
+    op.write(" ".join(agv_list))
+    op.close()
 
 def findavgRoot(mydict):
     agv_list = []
