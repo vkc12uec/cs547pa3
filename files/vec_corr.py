@@ -42,16 +42,9 @@ def read_test20(trainlol):     #input is listoflist
             else:
                 pid_nzeros[pid] = 1
 
-    #print " ~~~ " + str(test20dict["201"])
-
         # find the avg. of the test ratings and store like: pid => average
     for pid in pid_avg.keys():
         pid_avg[pid] = float(pid_avg[pid]) / 20
-
-    print "here1"
-    #print " ~~~ " + str(pid_avg["201"])     #correct
-    #print " ~~~ " + str(pid_avg["202"])
-    #print " ~~~ " + str(pid_avg["207"])
 
     averages = []
     averages = read_averages()
@@ -68,18 +61,15 @@ def read_test20(trainlol):     #input is listoflist
             sq_numd2 = 0
             for i in range (0,20):
                 pid = str(intpid)
-                #print "triplet = %d %d %d" % (intpid, train_user, i)
-                #print test20dict[pid][i]
                 (movieid, rating) = test20dict[pid][i].split(",")
                 movieid = int (movieid) -1
                 rating = float (rating)
                 if trainlol[train_user][movieid] == 0:
-                    #print "%s || %s" % (train_user, movieid+1)
                     continue
 
-                numd1 =  float(rating) # - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) #- float(averages[train_user])
-                #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
+                numd1 =  float(rating)
+                numd2 = float(trainlol[train_user][movieid])
+
                 if numd1 == 0:
                     numd1 = 1
                 if numd2 == 0:
