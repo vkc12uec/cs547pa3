@@ -75,8 +75,8 @@ def read_test20(trainlol):     #input is listoflist
                 rating = int (rating)   #test20dict[pid][i].split(",")[1])
                 #print ("movie id %d and rating %d") % (movieid, rating)
 
-                numd1 =  float(rating - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) - float(averages[train_user])
+                numd1 =  float(rating)  # - pid_avg[str(intpid)])
+                numd2 = float(trainlol[train_user][movieid]) #  - float(averages[train_user])
                 #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
                 if numd1 == 0:
                     numd1 = 1
@@ -130,7 +130,7 @@ def predict20(wuut, test20dict, pid_avg, averages, trainlol):
                 if new_rating < 1:
                     new_rating = 1
                 predicted_list.append("%s %s %s" % (testid, movieid+1, new_rating))
-    write_to_file_list ("result20.txt", predicted_list)
+    write_to_file_list ("vresult20.txt", predicted_list)
     return
 
 def read_test10(trainlol):     #input is listoflist
@@ -196,8 +196,8 @@ def read_test10(trainlol):     #input is listoflist
                 rating = int (rating)   #test10dict[pid][i].split(",")[1])
                 #print ("movie id %d and rating %d") % (movieid, rating)
 
-                numd1 =  float(rating - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) - float(averages[train_user])
+                numd1 =  float(rating)  # - pid_avg[str(intpid)])
+                numd2 = float(trainlol[train_user][movieid]) #  - float(averages[train_user])
                 #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
                 if numd1 == 0:
                     numd1 = 1
@@ -251,7 +251,7 @@ def predict10(wuut, test10dict, pid_avg, averages, trainlol):
                 if new_rating < 1:
                     new_rating = 1
                 predicted_list.append("%s %s %s" % (testid, movieid+1, new_rating))
-    write_to_file_list ("result10.txt", predicted_list)
+    write_to_file_list ("vresult10.txt", predicted_list)
     return
 
 # read the test file	test5.txt
@@ -302,7 +302,7 @@ def read_test5(trainlol):     #input is listoflist
     wvalues = {}    # user 201  : list of w values for user 1-200
     wuut = []   # list of list
 
-    for intpid in range(201,301):      #test5dict.keys():
+    for intpid in range(201,301):      # w calculation
         tmp_list = []
         for train_user in range(0,200):     # 0 to 199
             movieid = 0
@@ -318,8 +318,8 @@ def read_test5(trainlol):     #input is listoflist
                 rating = int (rating)   #test5dict[pid][i].split(",")[1])
                 #print ("movie id %d and rating %d") % (movieid, rating)
 
-                numd1 =  float(rating - pid_avg[str(intpid)])
-                numd2 = float(trainlol[train_user][movieid]) - float(averages[train_user])
+                numd1 =  float(rating)  # - pid_avg[str(intpid)])
+                numd2 = float(trainlol[train_user][movieid]) #  - float(averages[train_user])
                 #print "numd1 || numd2 " + str(numd1) + " " + str(numd2)
                 if numd1 == 0:
                     numd1 = 1
@@ -393,7 +393,7 @@ def predict5(wuut, test5dict, pid_avg, averages, trainlol):
                 if new_rating < 1:
                     new_rating = 1
                 predicted_list.append("%s %s %s" % (testid, movieid+1, new_rating))
-    write_to_file_list ("result5.txt", predicted_list)
+    write_to_file_list ("vresult5.txt", predicted_list)
     return
 
 def sumList(wuut):
@@ -481,9 +481,9 @@ def callme():
     listoflist = read_training()
     #sys.exit()
     #mydict = read_training()
-    read_test5(listoflist)
+    #read_test5(listoflist)
     #read_test10(listoflist)
-    #read_test20(listoflist)
+    read_test20(listoflist)
 
 
 if __name__ == '__main__':
