@@ -489,14 +489,19 @@ def iuftest20(trainlol, fjarray):     #input is listoflist
     predict20 (wuut, test20dict, pid_avg, averages, trainlol)
     #sys.exit()
 
+import time
+
 def callme():
     listoflist = []
     listoflist = read_training()
     fjarray = [] # for storing fj values j = [1-1000]
     fjarray = computefj (listoflist)
+    t1 = time.time()
     iuftest5(listoflist, fjarray)
     iuftest10(listoflist, fjarray)
     iuftest20(listoflist, fjarray)
+    t2 = time.time()
+    print "time = " + str(t2-t1) + " seconds"
     sys.exit()
 
 if __name__ == '__main__':

@@ -108,8 +108,8 @@ def predict20(wuut, test20dict, pid_avg, averages, trainlol):
                 for i in range(0,200):
                     w = wuut[testid-401][i]
 
-                    #if trainlol[i][movieid] == 0:
-                        #continue
+                    if trainlol[i][movieid] == 0:
+                        continue
                     t_sum += float(w) * ( trainlol[i][movieid] - float(averages[i]) )
                 pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumOfWs[testid-401]
                 #pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumofList(wuut[testid-201])
@@ -221,8 +221,8 @@ def predict10(wuut, test10dict, pid_avg, averages, trainlol):
                 for i in range(0,200):
                     w = wuut[testid-301][i]
 
-                    #if trainlol[i][movieid] == 0:
-                        #continue
+                    if trainlol[i][movieid] == 0:
+                        continue
                     t_sum += float(w) * ( trainlol[i][movieid] - float(averages[i]) )
                 pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumOfWs[testid-301]
                 #pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumofList(wuut[testid-201])
@@ -336,8 +336,8 @@ def predict5(wuut, test5dict, pid_avg, averages, trainlol):
                 for i in range(0,200):
                     w = wuut[testid-201][i]
 
-                    """if trainlol[i][movieid] == 0:
-                        continue"""
+                    if trainlol[i][movieid] == 0:
+                        continue
                     t_sum += float(w) * ( trainlol[i][movieid] - float(averages[i]) )
                 pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumOfWs[testid-201]
                 #pr_rating = float(pid_avg[str(testid)]) + float (t_sum)/sumofList(wuut[testid-201])
@@ -359,6 +359,7 @@ def write_dict_to_file(mydict):
     op.close()
 
 def info(wuut, test5dict, pid_avg, averages, trainlol):
+    return
     print "avg leng = %s" % (len(averages))
     print "test5dict.keys leng = %s" % (len(test5dict.keys()))  # shud be 100 from 201 - 300
     #for k in test5dict.keys():
@@ -434,7 +435,7 @@ def read_training():
     #sys.exit()
 
     findavgRoot(mydict)
-    findavgRoot1(listoflist)
+    #findavgRoot1(listoflist)
     #sys.exit()
     return listoflist
 
@@ -478,14 +479,19 @@ def findavgRoot(mydict):
     op.write(" ".join(sqrt_list))
     op.close()"""
 
+import time
+
 def callme():
     listoflist = [] #mydict = {}
     listoflist = read_training()
     #sys.exit()
     #mydict = read_training()
+    t1 = time.time()
     read_test5(listoflist)
     read_test10(listoflist)
     read_test20(listoflist)
+    t2 = time.time()
+    print "time = " + str(t2-t1) + " seconds"
 
 if __name__ == '__main__':
     callme()
